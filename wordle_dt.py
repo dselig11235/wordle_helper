@@ -102,8 +102,11 @@ class Branch:
             self.total_words_in_branches += len(self.responses[result])
         remaining_words = len(self.valid_words) - self.total_words_in_branches
         remaining_branches = len(all_results) - self.count
-        min_words_per_branch = int(remaining_words/remaining_branches)
-        self.estimate = self.entropy + (-math.log(1/min_words_per_branch)/math.log(2)) * (remaining_words/len(self.valid_words))
+        self.estimate = self.entropy
+        if remaining_branches > 0:
+            min_words_per_branch = int(remaining_words/remaining_branches)
+            if min_words_per_branch > 0:
+                self.estimate += (-math.log(1/min_words_per_branch)/math.log(2)) * (remaining_words/len(self.valid_words))
         return True
 
 class Wordle:
